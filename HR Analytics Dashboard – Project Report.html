@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HR Analytics Dashboard – Project Report</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--ink:#16203a;--mut:#5b6685;--pri:#1a2a9c;--acc:#1e90ff;--bad:#d9455f;--line:#e1e6f2;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1426;--card:#182038;--ink:#e8ecf8;--mut:#9aa6c9;--pri:#8fa0ff;--acc:#4aa8ff;--bad:#ff6b85;--line:#2a3558}}
+:root[data-theme="dark"]{--bg:#0f1426;--card:#182038;--ink:#e8ecf8;--mut:#9aa6c9;--pri:#8fa0ff;--acc:#4aa8ff;--bad:#ff6b85;--line:#2a3558}
+html{scroll-padding-top:70px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:linear-gradient(135deg,#1a2a9c,#0d1760);color:#fff;padding:36px 20px 28px;text-align:center}
+header h1{margin:0 0 6px;font-size:clamp(1.6rem,5vw,2.4rem)}
+header p{margin:0;opacity:.85}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;padding:8px 12px}
+nav a{white-space:nowrap;color:var(--mut);text-decoration:none;padding:6px 12px;border-radius:20px;font-size:.9rem}
+nav a:hover,nav a.on{background:var(--pri);color:#fff}
+main{max-width:980px;margin:0 auto;padding:16px}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0}
+h2{margin:0 0 10px;color:var(--pri);font-size:1.3rem}
+h3{margin:16px 0 6px;font-size:1.05rem}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px}
+.kpi{border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;cursor:help;position:relative}
+.kpi b{display:block;font-size:1.7rem;color:var(--pri)}
+.kpi span{font-size:.82rem;color:var(--mut)}
+.kpi.bad b{color:var(--bad)}
+.tip{display:none;position:absolute;left:50%;bottom:105%;transform:translateX(-50%);width:200px;background:var(--ink);color:var(--bg);font-size:.78rem;padding:8px;border-radius:8px;z-index:3}
+.kpi:hover .tip,.kpi:focus .tip{display:block}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 14px}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:6px 14px;border-radius:20px}
+button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.row{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:center;margin:8px 0;font-size:.9rem}
+.bars{display:flex;flex-direction:column;gap:3px}
+.bar{height:20px;border-radius:4px;min-width:3px;color:#fff;font-size:.75rem;line-height:20px;padding-left:6px;transition:width .4s}
+.stay{background:var(--acc)}.leave{background:var(--bad)}
+.note{background:var(--bg);border-left:4px solid var(--acc);padding:10px 14px;border-radius:6px;font-size:.92rem;margin:12px 0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.legend{font-size:.82rem;color:var(--mut);display:flex;gap:14px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
+.tl{display:flex;align-items:flex-end;gap:3px;height:90px;margin-top:8px}
+.tl div{flex:1;border-radius:3px 3px 0 0;background:var(--line);min-height:6px;position:relative}
+.tl div.y{background:var(--bad);height:100%}
+.tl div.n{height:12%}
+details{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:8px 0}
+summary{cursor:pointer;font-weight:600}
+input[type=range]{width:100%}
+.big{font-size:2rem;font-weight:700;color:var(--pri)}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+td,th{border-bottom:1px solid var(--line);padding:6px;text-align:left}
+[contenteditable]{border-bottom:1px dashed var(--mut)}
+footer{text-align:center;color:var(--mut);font-size:.82rem;padding:20px}
+</style>
+</head>
+<body>
+<header>
+<h1>HR Analytics Dashboard</h1>
+<p>Employee Attrition &amp; Workforce Insights · Built with Microsoft Power BI</p>
+</header>
+<nav id="nav">
+<a href="#overview">Overview</a><a href="#kpis">KPIs</a><a href="#visuals">Visuals</a><a href="#insights">Insights</a><a href="#recs">Recommendations</a><a href="#scope">Limits &amp; Future</a><a href="#concl">Conclusion</a>
+</nav>
+<main>
+
+<section id="overview">
+<h2>1. Project Overview</h2>
+<p>This project is an interactive Power BI dashboard that turns raw employee data into visual insight. It helps HR teams see <b>who is leaving, from where, and why</b> by comparing attrition across departments, salary ranges, job roles, age groups, gender and experience.</p>
+<table>
+<tr><th>Student</th><td contenteditable="true">Your name (click to edit)</td></tr>
+<tr><th>Roll No.</th><td contenteditable="true">Your roll number</td></tr>
+<tr><th>College</th><td contenteditable="true">Your college</td></tr>
+<tr><th>Guide</th><td contenteditable="true">Project guide</td></tr>
+<tr><th>Tool</th><td>Microsoft Power BI</td></tr>
+</table>
+</section>
+
+<section id="kpis">
+<h2>2. Key Metrics <small style="font-weight:400;color:var(--mut)">(hover or tap a card)</small></h2>
+<div class="kpis">
+<div class="kpi" tabindex="0"><b>31</b><span>Total Employees</span><div class="tip">Every employee record in the dataset.</div></div>
+<div class="kpi" tabindex="0"><b>25</b><span>Active Employees</span><div class="tip">Employees still working (Attrition = No).</div></div>
+<div class="kpi bad" tabindex="0"><b>6</b><span>Attrition Count</span><div class="tip">Employees who have left (Attrition = Yes).</div></div>
+<div class="kpi bad" tabindex="0"><b>19.4%</b><span>Attrition Rate</span><div class="tip">Left ÷ Total = 6 ÷ 31 = 19.4%.</div></div>
+<div class="kpi" tabindex="0"><b>34.74</b><span>Average Age</span><div class="tip">Mean age in years.</div></div>
+<div class="kpi" tabindex="0"><b>7.61</b><span>Avg Experience</span><div class="tip">Mean years of total work experience.</div></div>
+</div>
+<div class="note"><b>Methodology:</b> (1) load and clean data in Power BI, (2) create DAX measures for the KPIs, (3) build charts for each HR dimension, (4) add <b>Age Group</b> and <b>Department</b> slicers so every visual filters together.</div>
+</section>
+
+<section id="visuals">
+<h2>3. Dashboard Visuals (Explore)</h2>
+
+<h3>Attrition by Salary Slab</h3>
+<div class="tabs" id="salTabs">
+<button class="on" data-m="count">Headcount</button><button data-m="rate">Attrition rate %</button>
+</div>
+<div class="legend"><span><i class="dot stay"></i>Stayed</span><span><i class="dot leave"></i>Left</span></div>
+<div id="sal"></div>
+<div class="note" id="salNote"></div>
+
+<div class="grid2">
+<div>
+<h3>Job Satisfaction of Leavers</h3>
+<p style="margin:0;font-size:.85rem;color:var(--mut)">Sales Executive · scale 1 (low) to 4 (high). Tap a bar.</p>
+<div id="sat"></div>
+<div class="note" id="satNote">Tap a satisfaction score to read it.</div>
+</div>
+<div>
+<h3>Attrition by Gender</h3>
+<div id="gender"></div>
+<p style="font-size:.88rem;color:var(--mut)">5 of 6 leavers were male (83.33%), 1 was female (16.67%).</p>
+</div>
+</div>
+
+<h3>Attrition Trend by Experience</h3>
+<p style="margin:0;font-size:.85rem;color:var(--mut)">Red = employee in this experience year left; blue = stayed (illustrative from dashboard pattern: leavers cluster around 5–15 years).</p>
+<div class="tl" id="tl"></div>
+
+<h3>Other Visuals</h3>
+<p><b>Attrition by Department:</b> all 6 exits (100%) are in Marketing. <b>Age Group Distribution:</b> all 31 records are in the 26–35 band. <b>Department-wise Count:</b> Marketing holds 31 employees.</p>
+<div class="note"><b>Reading tip:</b> the screenshot is filtered to <b>Marketing</b> and age group <b>26–35</b>. Clearing the slicers in Power BI shows the full workforce.</div>
+</section>
+
+<section id="insights">
+<h2>4. Key Insights</h2>
+<details open><summary>Attrition is 19.4% — about 1 in 5 employees</summary><p>6 of 31 employees left. This is a moderate-to-high level for a single team and worth monitoring.</p></details>
+<details><summary>Higher pay bands lose more people</summary><p>The 10+ LPA band has the highest rate (3 of 6 = 50%), then 6–10 LPA (2 of 8 = 25%). 3–6 LPA lost nobody. Pay alone is not keeping senior or well-paid staff.</p></details>
+<details><summary>Satisfied employees still left</summary><p>Of the 6 Sales Executive leavers, 3 rated satisfaction 4 (high) and 2 rated 1 (low). Satisfaction scores alone do not predict exits, so career growth, workload or management should be explored.</p></details>
+<details><summary>Exits are concentrated in Sales Executives and Marketing</summary><p>All attrition sits in the Sales Executive role within Marketing; Sales Representatives show none.</p></details>
+<details><summary>Males account for most exits</summary><p>5 of 6 leavers were male. Gender totals are needed to confirm whether the rate is actually higher.</p></details>
+
+<h3>What-if: retention improvement</h3>
+<p>If HR retained <b id="w">2</b> of the 6 leavers:</p>
+<input type="range" id="sl" min="0" max="6" value="2" aria-label="Employees retained">
+<p>New attrition rate: <span class="big" id="nr"></span> (was 19.4%)</p>
+</section>
+
+<section id="recs">
+<h2>5. Business Recommendations</h2>
+<details><summary>Review pay and growth for 6+ LPA roles</summary><p>Introduce career paths, promotions and retention bonuses for higher-paid Sales Executives.</p></details>
+<details><summary>Run stay and exit interviews</summary><p>Because satisfaction scores did not explain the exits, collect direct feedback on manager support, targets and growth.</p></details>
+<details><summary>Target the 5–15 year experience window</summary><p>Offer mentoring and role changes to mid-career staff where exits cluster.</p></details>
+<details><summary>Track metrics monthly</summary><p>Refresh the dashboard monthly and set an alert if attrition passes an agreed threshold, such as 15%.</p></details>
+</section>
+
+<section id="scope">
+<h2>6. Limitations &amp; Future Scope</h2>
+<div class="grid2">
+<div><h3>Limitations</h3><ul><li>Small sample (31 records), so percentages swing easily.</li><li>Only one department and one age group in view.</li><li>No exit-reason or performance data.</li></ul></div>
+<div><h3>Future scope</h3><ul><li>Add all departments and more records.</li><li>Predict attrition risk with machine learning.</li><li>Add tenure, promotion and manager data.</li><li>Publish to Power BI Service with live refresh.</li></ul></div>
+</div>
+</section>
+
+<section id="concl">
+<h2>7. Conclusion</h2>
+<p>The HR Analytics Dashboard gives HR teams a clear, filterable view of attrition. In this dataset, 19.4% of employees left, mostly Sales Executives in Marketing, with higher-paid staff leaving at the highest rate. These findings support targeted retention actions and better workforce planning.</p>
+</section>
+</main>
+<footer>HR Analytics Dashboard – Project Report</footer>
+
+<script>
+var sal=[["0-3 LPA",9,1],["3-6 LPA",7,0],["6-10 LPA",6,2],["10+ LPA",3,3]];
+function drawSal(m){
+ var h="",mx=m=="rate"?100:10;
+ sal.forEach(function(r){var t=r[1]+r[2],rate=Math.round(r[2]/t*100);
+  var a=m=="rate"?100-rate:r[1],b=m=="rate"?rate:r[2];
+  h+='<div class="row"><span>'+r[0]+'</span><div class="bars"><div class="bar stay" style="width:'+Math.max(a/mx*100,3)+'%">'+a+(m=="rate"?"%":"")+'</div><div class="bar leave" style="width:'+Math.max(b/mx*100,3)+'%">'+b+(m=="rate"?"%":"")+'</div></div></div>'});
+ document.getElementById("sal").innerHTML=h;
+ document.getElementById("salNote").innerHTML=m=="rate"?"<b>Rate view:</b> 10+ LPA = 50%, 6–10 LPA = 25%, 0–3 LPA = 10%, 3–6 LPA = 0%.":"<b>Headcount view:</b> most employees sit in the lower bands, but the 10+ LPA band has as many leavers (3) as stayers (3).";
+}
+document.querySelectorAll("#salTabs button").forEach(function(b){b.onclick=function(){document.querySelectorAll("#salTabs button").forEach(function(x){x.classList.remove("on")});b.classList.add("on");drawSal(b.dataset.m)}});
+drawSal("count");
+
+var sat=[2,0,1,3],txt=["Low (1): unhappy leavers — pay or workload may be the issue.","(2): no leavers rated this level.","(3): moderately satisfied, yet left.","High (4): the largest group — satisfied people left too, so look beyond satisfaction."];
+var sh="";sat.forEach(function(v,i){sh+='<div class="row" style="grid-template-columns:50px 1fr"><span>Score '+(i+1)+'</span><div class="bars"><div class="bar leave" data-i="'+i+'" style="width:'+Math.max(v/3*100,4)+'%;cursor:pointer">'+v+'</div></div></div>'});
+document.getElementById("sat").innerHTML=sh;
+document.querySelectorAll("#sat .bar").forEach(function(e){e.onclick=function(){document.getElementById("satNote").innerHTML=txt[e.dataset.i]}});
+
+document.getElementById("gender").innerHTML='<svg viewBox="0 0 120 120" width="150" role="img" aria-label="Pie: 83.33% male, 16.67% female"><circle r="40" cx="60" cy="60" fill="none" stroke="#1e90ff" stroke-width="28"/><circle r="40" cx="60" cy="60" fill="none" stroke="#d9455f" stroke-width="28" stroke-dasharray="41.9 251.3" transform="rotate(-90 60 60)"/></svg><div class="legend"><span><i class="dot stay"></i>Male 5</span><span><i class="dot leave"></i>Female 1</span></div>';
+
+var ex=[0,0,0,0,0,1,0,1,1,0,0,1,0,0,1,0,0],th="";
+ex.forEach(function(v,i){th+='<div class="'+(v?"y":"n")+'" title="'+i+' yrs: '+(v?"left":"stayed")+'"></div>'});
+document.getElementById("tl").innerHTML=th;
+
+var sl=document.getElementById("sl");
+function calc(){document.getElementById("w").textContent=sl.value;document.getElementById("nr").textContent=((6-sl.value)/31*100).toFixed(1)+"%"}
+sl.oninput=calc;calc();
+
+var links=document.querySelectorAll("#nav a"),secs=[].slice.call(document.querySelectorAll("section"));
+window.addEventListener("scroll",function(){var c=0;secs.forEach(function(s,i){if(s.getBoundingClientRect().top<120)c=i});links.forEach(function(l,i){l.classList.toggle("on",i==c)})});
+</script>
+</body>
+</html>
